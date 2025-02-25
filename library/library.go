@@ -1,8 +1,12 @@
 package library
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 
 	"practice.com/lib/book"
 )
@@ -27,21 +31,40 @@ func (l Library) PrintAllBooks() {
 
 func getDataFromUser(library *Library) (book.Book, error) {
 	var newBook book.Book
-	//TODO: Fix input, ignore \n symbol by using bufio.Scanner
+	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Author Name: ")
-	fmt.Scan(&newBook.Author)
-	fmt.Println("Book`s Title: ")
-	fmt.Scan(&newBook.Title)
-	fmt.Println("Book`s Year: ")
-	fmt.Scan(&newBook.Year)
-	newBook.ID = len(library.Books)
+	text, _ := reader.ReadString('\n')
+	formattedText := getFormattedText(text)
+	newBook.Author = formattedText
 
+	//////
+
+	fmt.Println("Book`s Title: ")
+	text, _ = reader.ReadString('\n')
+	formattedText = getFormattedText(text)
+	newBook.Title = formattedText
+
+	/////
+	fmt.Println("Book`s  Year: ")
+	text, _ = reader.ReadString('\n')
+	formattedText = getFormattedText(text)
+	year, err := strconv.Atoi(formattedText)
+	if err != nil {
+		panic(err)
+	}
+	newBook.Year = year
+	fmt.Println(library.Books)
 	if isInvalidBook(newBook) {
 		return newBook, nil
 	}
 
 	return book.Book{}, errors.New("Invalid Book")
 
+}
+
+func getFormattedText(text string) string {
+	text = strings.TrimSpace(text)
+	return text
 }
 
 func isInvalidBook(currentBook book.Book) bool {
