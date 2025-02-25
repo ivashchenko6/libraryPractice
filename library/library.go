@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
-	"practice.com/lib/book"
+	"practice.com/example/funcEssentials"
+
+	gonanoid "github.com/matoous/go-nanoid/v2"
+	"practice.com/example/book"
 )
 
 type Library struct {
@@ -25,53 +27,44 @@ func (l *Library) AddNewBook() {
 	l.Books = append(l.Books, newBook)
 }
 
+func (l *Library) RemoveBook(id int) {
+
+}
+
 func (l Library) PrintAllBooks() {
 	fmt.Println(l.Books)
 }
 
 func getDataFromUser(library *Library) (book.Book, error) {
+
 	var newBook book.Book
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Author Name: ")
 	text, _ := reader.ReadString('\n')
-	formattedText := getFormattedText(text)
+	formattedText := funcEssentials.GetFormattedText(text)
 	newBook.Author = formattedText
 
 	//////
 
 	fmt.Println("Book`s Title: ")
 	text, _ = reader.ReadString('\n')
-	formattedText = getFormattedText(text)
+	formattedText = funcEssentials.GetFormattedText(text)
 	newBook.Title = formattedText
 
 	/////
 	fmt.Println("Book`s  Year: ")
 	text, _ = reader.ReadString('\n')
-	formattedText = getFormattedText(text)
+	formattedText = funcEssentials.GetFormattedText(text)
 	year, err := strconv.Atoi(formattedText)
 	if err != nil {
 		panic(err)
 	}
 	newBook.Year = year
-	fmt.Println(library.Books)
-	if isInvalidBook(newBook) {
+	id, _ := gonanoid.New()
+	newBook.ID = id
+	if funcEssentials.IsValidBook(newBook) {
 		return newBook, nil
 	}
-
 	return book.Book{}, errors.New("Invalid Book")
 
-}
-
-func getFormattedText(text string) string {
-	text = strings.TrimSpace(text)
-	return text
-}
-
-func isInvalidBook(currentBook book.Book) bool {
-
-	if currentBook.Author != "" && currentBook.Year > 0 && currentBook.Title != "" {
-		return true
-	}
-
-	return false
 }

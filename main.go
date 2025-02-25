@@ -1,11 +1,10 @@
 package main
 
 import (
-	"practice.com/lib/library"
+	"practice.com/example/library"
 )
 
 func main() {
-
 	var lavcLibrary library.Library = library.Library{LibraryName: "LAVC"}
 	lavcLibrary.AddNewBook()
 	lavcLibrary.PrintAllBooks()

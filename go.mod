@@ -1,4 +1,4 @@
-module practice.com/lib
+module practice.com/example
 
 go 1.23.4
 
