@@ -53,3 +53,11 @@ func GetDataFromUser() (book.Book, error) {
 	return book.Book{}, errors.New("Invalid Book")
 
 }
+
+func GetMultiWordsLineFromUser() string {
+	reader := bufio.NewReader(os.Stdin)
+	text, _ := reader.ReadString('\n')
+	fortmattedText := GetFormattedText(text)
+
+	return fortmattedText
+}
