@@ -41,7 +41,11 @@ func (l Library) PrintAllBooks() {
 	}
 }
 
-func (l Library) FindBookByName(lookingForName string) book.Book {
+func (l Library) FindBookByName() book.Book {
+	var lookingForName string
+	fmt.Print("What book are we looking for: ")
+	fmt.Scan(&lookingForName)
+
 	for _, currentBook := range l.Books {
 		if currentBook.Title == lookingForName {
 			return currentBook
@@ -50,13 +54,18 @@ func (l Library) FindBookByName(lookingForName string) book.Book {
 	return book.Book{}
 }
 
-func (l *Library) EditBookName(numberOfBook int, newTitle string) error {
-	if len(newTitle) < 1 {
-		return errors.New("Title of book should be greater than zero")
+func (l *Library) EditBookName() error {
+	var numberOfBook int
+	fmt.Print("What book you would like to edit(number): ")
+	fmt.Scan(&numberOfBook)
+	if numberOfBook > len(l.Books) {
+		return errors.New("Out of range.  Must be in the range")
 	}
 
-	if len(l.Books) < numberOfBook {
-		return errors.New("Index of book must be in the list(out of range)")
+	newTitle := funcEssentials.GetMultiWordsLineFromUser()
+
+	if len(newTitle) < 1 {
+		return errors.New("Title of book should be greater than zero")
 	}
 
 	l.Books[numberOfBook-1].Title = newTitle
