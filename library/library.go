@@ -1,15 +1,10 @@
 package library
 
 import (
-	"bufio"
-	"errors"
 	"fmt"
-	"os"
-	"strconv"
 
 	"practice.com/example/funcEssentials"
 
-	gonanoid "github.com/matoous/go-nanoid/v2"
 	"practice.com/example/book"
 )
 
@@ -19,7 +14,7 @@ type Library struct {
 }
 
 func (l *Library) AddNewBook() {
-	newBook, err := getDataFromUser(l)
+	newBook, err := funcEssentials.GetDataFromUser()
 	if err != nil {
 		panic(err)
 	}
@@ -27,44 +22,18 @@ func (l *Library) AddNewBook() {
 	l.Books = append(l.Books, newBook)
 }
 
-func (l *Library) RemoveBook(id int) {
-
+func (l *Library) RemoveBook() {
+	var id string
+	fmt.Println("Id need to be deleted: ")
+	fmt.Scan(&id)
+	for index, currentBook := range l.Books {
+		if currentBook.ID == id {
+			l.Books = append(l.Books[:index], l.Books[index+1:]...)
+			fmt.Println(currentBook, " Was deleted")
+		}
+	}
 }
 
 func (l Library) PrintAllBooks() {
 	fmt.Println(l.Books)
-}
-
-func getDataFromUser(library *Library) (book.Book, error) {
-
-	var newBook book.Book
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Author Name: ")
-	text, _ := reader.ReadString('\n')
-	formattedText := funcEssentials.GetFormattedText(text)
-	newBook.Author = formattedText
-
-	//////
-
-	fmt.Println("Book`s Title: ")
-	text, _ = reader.ReadString('\n')
-	formattedText = funcEssentials.GetFormattedText(text)
-	newBook.Title = formattedText
-
-	/////
-	fmt.Println("Book`s  Year: ")
-	text, _ = reader.ReadString('\n')
-	formattedText = funcEssentials.GetFormattedText(text)
-	year, err := strconv.Atoi(formattedText)
-	if err != nil {
-		panic(err)
-	}
-	newBook.Year = year
-	id, _ := gonanoid.New()
-	newBook.ID = id
-	if funcEssentials.IsValidBook(newBook) {
-		return newBook, nil
-	}
-	return book.Book{}, errors.New("Invalid Book")
-
 }
