@@ -1,6 +1,7 @@
 package library
 
 import (
+	"errors"
 	"fmt"
 
 	"practice.com/example/funcEssentials"
@@ -38,4 +39,27 @@ func (l Library) PrintAllBooks() {
 	for index, book := range l.Books {
 		fmt.Printf("%d. Title: %s, Year: %d\n", index, book.Title, book.Year)
 	}
+}
+
+func (l Library) FindBookByName(lookingForName string) book.Book {
+	for _, currentBook := range l.Books {
+		if currentBook.Title == lookingForName {
+			return currentBook
+		}
+	}
+	return book.Book{}
+}
+
+func (l *Library) EditBookName(numberOfBook int, newTitle string) error {
+	if len(newTitle) < 1 {
+		return errors.New("Title of book should be greater than zero")
+	}
+
+	if len(l.Books) < numberOfBook {
+		return errors.New("Index of book must be in the list(out of range)")
+	}
+
+	l.Books[numberOfBook-1].Title = newTitle
+	return nil
+
 }
