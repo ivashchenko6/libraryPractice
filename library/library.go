@@ -35,5 +35,7 @@ func (l *Library) RemoveBook() {
 }
 
 func (l Library) PrintAllBooks() {
-	fmt.Println(l.Books)
+	for index, book := range l.Books {
+		fmt.Printf("%d. Title: %s, Year: %d\n", index, book.Title, book.Year)
+	}
 }
