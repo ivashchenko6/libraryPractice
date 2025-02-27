@@ -22,15 +22,8 @@ func chooseAction(library *library.Library) {
 
 	for {
 		printMenu()
+		fmt.Print("---> ")
 		fmt.Scan(&choice)
-		if choice < 1 && choice > 6 {
-			fmt.Println("Invalid choice, try again")
-			continue
-		}
-		if choice == 6 {
-			fmt.Println("Exit")
-			return
-		}
 
 		switch choice {
 
@@ -39,10 +32,33 @@ func chooseAction(library *library.Library) {
 		case 2:
 			library.AddNewBook()
 		case 3:
-			library.FindBookByName()
+			foundedBook, err := library.FindBookByName()
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			fmt.Println("We found your book, here you go", foundedBook)
 		case 4:
-			library.RemoveBook()
+			err := library.RemoveBook()
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+		case 5:
+			err := library.EditBookName()
+
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+		case 6:
+			fmt.Println("Exit...")
+			return
+		default:
+			fmt.Println("Invalid choice, try again")
+			continue
 		}
+
 	}
 
 }
