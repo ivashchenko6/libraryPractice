@@ -31,13 +31,17 @@ func GetDataFromUser() (book.Book, error) {
 
 	//////
 
-	fmt.Println("Book`s Title: ")
+	fmt.Print("Book`s Title: ")
 	text, _ := reader.ReadString('\n')
 	formattedText := GetFormattedText(text)
 	newBook.Title = formattedText
 
+	fmt.Print("Book`s Genre: ")
+	text, _ = reader.ReadString('\n')
+	formattedText = GetFormattedText(text)
+	newBook.Genre = formattedText
 	/////
-	fmt.Println("Book`s  Year: ")
+	fmt.Print("Book`s  Year: ")
 	text, _ = reader.ReadString('\n')
 	formattedText = GetFormattedText(text)
 	year, err := strconv.Atoi(formattedText)
